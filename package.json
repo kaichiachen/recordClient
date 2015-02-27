@@ -1,0 +1,23 @@
+{
+  "name": "recordClient",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "async": "^0.9.0",
+    "body-parser": "^1.12.0",
+    "connect-multiparty": "^1.2.5",
+    "delivery": "^0.0.3",
+    "express": "^4.11.2",
+    "forever": "^0.14.1",
+    "raspicam": "^0.2.13",
+    "socket.io": "^1.3.3",
+    "socket.io-client": "^1.3.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node main.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
