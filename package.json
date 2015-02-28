@@ -8,16 +8,24 @@
     "body-parser": "^1.12.0",
     "connect-multiparty": "^1.2.5",
     "delivery": "^0.0.3",
-    "express": "^4.11.2",
+    "express": "^4.12.0",
     "forever": "^0.14.1",
     "raspicam": "^0.2.13",
-    "socket.io": "^1.3.3",
-    "socket.io-client": "^1.3.3"
+    "socket.io": "^1.3.4",
+    "socket.io-client": "^1.3.4"
   },
   "devDependencies": {},
   "scripts": {
     "test": "node main.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/singbird81/recordClient.git"
+  },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/singbird81/recordClient/issues"
+  },
+  "homepage": "https://github.com/singbird81/recordClient"
 }

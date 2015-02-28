@@ -1,12 +1,7 @@
 var socket = require('socket.io-client')('http://54.169.158.27:1114'); 
 var fs = require('fs')
-, path = require('path')
-, _ = require('underscore');
 var RaspiCam = require("raspicam");
-var ss = require('socket.io-stream');
 var dl  = require('delivery');
-var async = require('async');
-var stream = ss.createStream();
 var delivery = null;
 
 socket.on('connect',function(){
@@ -41,13 +36,6 @@ socket.on('from_server_shot_list', function(data){
 	})
 });
 
-socket.on('from_server_remove_shot_list', function(data){
-	var dir = 'photo/';
-	removeFolder(function(dir,callback){
-		socket.emit('from_client_remove_shot_list', callback);
-	})
-});
-
 socket.on('from_server_shot_name', function(data){
 	fs.exists('photo/' + data.name , function(exists) {
 		if(exists) {
@@ -72,7 +60,7 @@ socket.on('from_server_shot_name', function(data){
 
 function CameraOn(callback) {
 	var date = new Date().getTime()
-	var file = "photo/" + date + "img.png"
+	var file = __dirname + "/photo/" + date + "img.png"
 	var name = date + "img.png"
 	var camera = new RaspiCam({
 		mode: "photo",
@@ -99,29 +87,6 @@ function CameraOn(callback) {
 	camera.start();
 }
 
-function VideoOn(req, res) {
-	var camera = new RaspiCam({
-		mode: "video",
-		output: "video/video.h264",
-		framerate: 15,
-		timeout: 20000 // take a 5 second video
-	});
-
-	camera.on("started", function( err, timestamp ){
-		console.log("video started at " + timestamp );
-	});
-
-	camera.on("read", function( err, timestamp, filename ){
-		console.log("video captured with filename: " + filename + " at " + timestamp );
-	});
-
-	camera.on("exit", function( timestamp ){
-		console.log("video child process has exited at " + timestamp );
-	});
-
-	camera.start();
-}
-
 function getShotPhotoList(callback){
 	var path = 'photo/';
 	fs.exists(path,function(exists){
@@ -134,34 +99,5 @@ function getShotPhotoList(callback){
 		}
 	})
 }
-
-function removeFolder(location, next) {
-    fs.readdir('photo', function (err, files) {
-        async.each(files, function (file, cb) {
-            file = location + '/' + file
-            fs.stat(file, function (err, stat) {
-                if (err) {
-                    return cb(err);
-                }
-                if (stat.isDirectory()) {
-                    removeFolder(file, cb);
-                } else {
-                    fs.unlink(file, function (err) {
-                        if (err) {
-                            return cb(err);
-                        }
-                        return cb();
-                    })
-                }
-            })
-        }, function (err) {
-            if (err) return next(err)
-            fs.rmdir(location, function (err) {
-                return next(err)
-            })
-        })
-    })
-}
-
 
 console.log('running');
